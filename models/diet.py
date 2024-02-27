@@ -1,18 +1,29 @@
 from database import db
+from uuid import uuid4
 from sqlalchemy import String, Boolean, DateTime
 from sqlalchemy.orm import mapped_column
 
 class Diet(db.Model):
   __tablename__ = 'diets'
 
-  id = mapped_column(String(14), primary_key=True)
-  name = mapped_column(String(80), unique=True)
-  description = mapped_column(String(120))
+  id = mapped_column(String(36), primary_key=True)
+  name = mapped_column(String(80))
+  description = mapped_column(String(255))
   date = mapped_column(DateTime, nullable=False)
   is_diet = mapped_column(Boolean, default=False)
 
+  def serialize(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "description": self.description,
+      "date": self.date.strftime('%Y-%m-%d'),
+      "is_diet": self.is_diet
+    }
+
 def create_diet_db(diet: Diet):
   try:
+    diet.id = str(uuid4())
     db.session.add(diet)
     db.session.commit()
     return True
