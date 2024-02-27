@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: daily_diet_db
+    image: mysql:latest
+    environment:
+      MYSQL_USER: 'daily_diet'
+      MYSQL_PASSWORD: 'daily_diet'
+      MYSQL_DATABASE: 'daily_diet_db'
+      MYSQL_ROOT_PASSWORD: 'admin123'
+    ports:
+      - "3306:3306"
